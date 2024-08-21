@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "228239353054",
+    "project_id": "goldyfly-79541",
+    "storage_bucket": "goldyfly-79541.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228239353054:android:0613b2d0f0ee2a1cdc0e4f",
+        "android_client_info": {
+          "package_name": "com.example.goldyfly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlZitR6rUSqPY4-_GOICK0eqkVFzF1n_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
