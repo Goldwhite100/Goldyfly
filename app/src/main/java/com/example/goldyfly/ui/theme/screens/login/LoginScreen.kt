@@ -1,6 +1,7 @@
 package com.example.goldyfly.ui.theme.screens.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,13 +10,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -52,14 +57,13 @@ import com.example.goldyfly.ui.theme.newGreen
 fun LoginScreen(navController: NavController){
     Column (modifier = Modifier
         .fillMaxSize()
-        .paint(painterResource(com.example.goldyfly.R.drawable.background), contentScale = ContentScale.FillBounds)
+        .background(newGreen),
 
-        ,
         horizontalAlignment = Alignment.CenterHorizontally
         ) {
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         Image(
-            painter = painterResource(id = com.example.goldyfly.R.drawable.background) ,
+            painter = painterResource(id = com.example.goldyfly.R.drawable.img) ,
             contentDescription = "property",
             modifier = Modifier
                 .size(200.dp),
@@ -72,75 +76,94 @@ fun LoginScreen(navController: NavController){
             text = "Welcome back",
             fontSize = 60.sp,
             fontFamily = FontFamily.Cursive,
-            color = Color.Magenta
+            color = Color.White
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "Already have an account.Please enter your credantials",
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             fontFamily = FontFamily.SansSerif,
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = Color.White
         )
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
 
-        Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
-            value =email,
-            onValueChange = {email = it},
-            label = { Text(text = "email address")},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp),
-            //ledingicon or
-            trailingIcon ={ Icon(imageVector = Icons.Default.Email, contentDescription = "", tint = Purple80) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
-            value =password,
-            onValueChange = {password = it},
-            label = { Text(text = "password")},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp),
-            //ledingicon or
-            trailingIcon ={ Icon(imageVector = Icons.Default.Lock, contentDescription = "", tint = newGreen)},
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            visualTransformation = PasswordVisualTransformation()
-        )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        val context = LocalContext.current
-        val authViewModel = AuthViewModel(navController, context)
-        Button(
-            onClick = {
-                authViewModel.login(email, password)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .padding(start = 20.dp, end = 20.dp),
-            colors = ButtonDefaults.buttonColors(Pink40),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(text = "LOGIN")
+
+        Column (modifier = Modifier.verticalScroll(rememberScrollState())){
+            Card (modifier = Modifier.fillMaxWidth().height(700.dp),
+                shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)){
+
+                var email by remember { mutableStateOf("") }
+                var password by remember { mutableStateOf("") }
+
+                Spacer(modifier = Modifier.height(30.dp))
+
+                OutlinedTextField(
+                    value =email,
+                    onValueChange = {email = it},
+                    label = { Text(text = "email address")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp),
+                    //ledingicon or
+                    trailingIcon ={ Icon(imageVector = Icons.Default.Email, contentDescription = "", tint = newGreen) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                OutlinedTextField(
+                    value =password,
+                    onValueChange = {password = it},
+                    label = { Text(text = "password")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp),
+                    //ledingicon or
+                    trailingIcon ={ Icon(imageVector = Icons.Default.Lock, contentDescription = "", tint = newGreen)},
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    visualTransformation = PasswordVisualTransformation()
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+
+                val context = LocalContext.current
+                val authViewModel = AuthViewModel(navController, context)
+                Button(
+                    onClick = {
+                        authViewModel.login(email, password)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .padding(start = 20.dp, end = 20.dp),
+                    colors = ButtonDefaults.buttonColors(newGreen),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(text = "LOGIN")
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Do not have an account ?Register",
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.SansSerif,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate(ROUT_SIGNUP)
+                        },
+                    textAlign = TextAlign.Center
+                )
+
+
+
+
+
+
+
+
+            }
         }
-
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = "Do not have an account ?Register",
-            fontSize = 20.sp,
-            fontFamily = FontFamily.SansSerif,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    navController.navigate(ROUT_SIGNUP)
-                },
-            textAlign = TextAlign.Center
-        )
-
 
 
 

@@ -17,10 +17,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
@@ -47,6 +49,7 @@ import com.example.goldyfly.ui.theme.newGreen
 fun HomeScreen(navController: NavController){
     val pickupLocation = remember { mutableStateOf("") }
     val dropoffLocation = remember { mutableStateOf("") }
+    var safetyNote by remember { mutableStateOf("") }
 
 
     Column(
@@ -69,7 +72,7 @@ fun HomeScreen(navController: NavController){
 
 
         Text(
-            text = "Goldyfly",
+            text = "GoldyFly",
             fontSize = 60.sp,
             fontFamily = FontFamily.Cursive,
             color = Color.Magenta
@@ -105,10 +108,15 @@ fun HomeScreen(navController: NavController){
             Text("Book Ride")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            navController.navigate("profile")
-        }) {
-            Text("Profile")
+
+        TextField(
+            value = safetyNote,
+            onValueChange = { safetyNote = it },
+            label = { Text("Add safety note (optional)") },
+            modifier = Modifier.fillMaxWidth(),
+            maxLines = 3
+        )
+
 
 
             Button(
@@ -126,7 +134,7 @@ fun HomeScreen(navController: NavController){
 
 
     }
-}
+
 
 @Composable
 @Preview(showBackground = true)

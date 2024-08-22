@@ -1,4 +1,4 @@
-package com.example.goldfly.navigation
+package com.example.goldyfly.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -6,18 +6,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.goldyfly.navigation.ROUT_ABOUT
-import com.example.goldyfly.navigation.ROUT_HOME
-import com.example.goldyfly.navigation.ROUT_LOGIN
-import com.example.goldyfly.navigation.ROUT_PROFILE
-import com.example.goldyfly.navigation.ROUT_RIDEDETAILS
-import com.example.goldyfly.navigation.ROUT_SIGNUP
-import com.example.goldyfly.navigation.ROUT_SPLASH
 import com.example.goldyfly.ui.theme.screens.about.AboutScreen
+import com.example.goldyfly.ui.theme.screens.driververification.DriverVerificationScreen
 import com.example.goldyfly.ui.theme.screens.home.HomeScreen
 import com.example.goldyfly.ui.theme.screens.login.LoginScreen
 import com.example.goldyfly.ui.theme.screens.profile.ProfileScreen
-import com.example.goldyfly.ui.theme.screens.ridedetails.RideDetailsScreen
+import com.example.goldyfly.ui.theme.screens.registration.RegistrationScreen
 import com.example.goldyfly.ui.theme.screens.signup.SignupScreen
 import com.example.goldyfly.ui.theme.screens.splash.SplashScreen
 
@@ -44,7 +38,7 @@ fun AppNavHost(
 
         }
         composable(ROUT_SPLASH) {
-           SplashScreen(navController = navController)
+            SplashScreen(navController = navController)
 
         }
 
@@ -54,23 +48,26 @@ fun AppNavHost(
 
         }
         composable(ROUT_LOGIN) {
-                LoginScreen(navController = navController)
+            LoginScreen(navController = navController)
 
         }
         composable(ROUT_PROFILE) {
             ProfileScreen(navController = navController)
 
         }
-        composable(ROUT_RIDEDETAILS) {
-            RideDetailsScreen(navController = navController)        }
+
+        composable(ROUT_REGISTRATION) {
+            RegistrationScreen(navController = navController)
+        }
 
 
-
-
-
-
-
-
+        composable(ROUT_DRIVERVERIFICATION) {
+                DriverVerificationScreen(navController = navController)
 
         }
+
+        }
+
     }
+
+
