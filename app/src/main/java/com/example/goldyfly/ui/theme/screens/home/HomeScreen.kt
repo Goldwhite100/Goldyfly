@@ -2,6 +2,7 @@ package com.example.goldyfly.ui.theme.screens.home
 
 
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 
 import androidx.compose.ui.text.font.FontFamily
 
@@ -61,11 +64,15 @@ fun HomeScreen(navController: NavController){
     )
     {
 
-        //Lottie Animation......shuold replace image in splash screen
-        val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.property))
-        val progress by animateLottieCompositionAsState(composition)
-        LottieAnimation(composition, progress,
-            modifier = Modifier.size(300.dp)
+
+        Image(
+            painter = painterResource(id = R.drawable.img) ,
+            contentDescription = "",
+            modifier = Modifier
+                .size(200.dp),
+
+            contentScale = ContentScale.Crop
+
         )
 
 
