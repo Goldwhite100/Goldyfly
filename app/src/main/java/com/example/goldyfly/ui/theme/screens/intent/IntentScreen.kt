@@ -75,7 +75,6 @@ fun IntentScreen(navController: NavController){
         Scaffold(
             bottomBar = {
                 NavigationBar(
-                    containerColor = Color.Black,
                     contentColor = Color.White
                 ) {
                     bottomNavItems.forEachIndexed { index, bottomNavItem ->

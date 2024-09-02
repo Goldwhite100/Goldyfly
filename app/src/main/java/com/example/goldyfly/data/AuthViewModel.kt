@@ -6,10 +6,11 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.goldyfly.models.User
-import com.example.goldyfly.navigation.ROUT_DASHBOARD
+import com.example.goldyfly.navigation.ROUT_DETAILS
 import com.example.goldyfly.navigation.ROUT_HOME
 import com.example.goldyfly.navigation.ROUT_LOGIN
 import com.example.goldyfly.navigation.ROUT_SIGNUP
+import com.example.goldyfly.navigation.VIEW_CONTACT
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -24,10 +25,8 @@ class AuthViewModel(var navController: NavController, var context: Context){
         progress.setMessage("Please wait...")
     }
     fun signup(name:String, email:String, password:String,confpassword:String){
-        progress.show()
 
         if (email.isBlank() || password.isBlank() ||confpassword.isBlank()){
-            progress.dismiss()
             Toast.makeText(context,"Please email and password cannot be blank", Toast.LENGTH_LONG).show()
         }else if (password != confpassword){
             Toast.makeText(context,"Password do not match", Toast.LENGTH_LONG).show()
@@ -58,17 +57,18 @@ class AuthViewModel(var navController: NavController, var context: Context){
     }
 
     fun login(email: String, password: String){
-        progress.show()
 
         if (email.isBlank() || password.isBlank()){
-            progress.dismiss()
             Toast.makeText(context,"Please email and password cannot be blank", Toast.LENGTH_LONG).show()
-        }else {
+        }
+        else if (email == "gold@gmail.com" && password == "123456"){
+            navController.navigate(ROUT_LOGIN)
+        }
+        else {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                progress.dismiss()
-                if (it.isSuccessful){
+                if (it.isSuccessful ){
                     Toast.makeText(this.context, "Success", Toast.LENGTH_SHORT).show()
-                    navController.navigate( ROUT_DASHBOARD)
+                    navController.navigate(ROUT_DETAILS)
                 }else{
                     Toast.makeText(this.context, "Error", Toast.LENGTH_SHORT).show()
                 }
@@ -76,6 +76,30 @@ class AuthViewModel(var navController: NavController, var context: Context){
 
         }
     }
+
+    fun adminlogin(email: String, password: String){
+
+        if (email.isBlank() || password.isBlank()){
+            Toast.makeText(context,"Please email and password cannot be blank", Toast.LENGTH_LONG).show()
+        }
+
+        else if (email == "gold@gmail.com" && password == "123456"){
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                if (it.isSuccessful ){
+                    Toast.makeText(this.context, "Success", Toast.LENGTH_SHORT).show()
+                    navController.navigate(VIEW_CONTACT)
+                }else{
+                    Toast.makeText(this.context, "Error", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+        else{
+            navController.navigate(ROUT_LOGIN)
+        }
+    }
+
+
 
     fun logout(){
         mAuth.signOut()

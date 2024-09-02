@@ -4,12 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -66,22 +68,16 @@ fun LoginScreen(navController: NavController){
             painter = painterResource(id = com.example.goldyfly.R.drawable.img) ,
             contentDescription = "property",
             modifier = Modifier
-                .size(200.dp),
+                .size(150.dp),
 
             contentScale = ContentScale.Crop
 
         )
+
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "Welcome back",
-            fontSize = 60.sp,
-            fontFamily = FontFamily.Cursive,
-            color = Color.White
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = "Already have an account.Please enter your credantials",
-            fontSize = 18.sp,
+            text = "Already have an account.Please enter your credentials",
+            fontSize = 15.sp,
             fontFamily = FontFamily.SansSerif,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
@@ -91,8 +87,10 @@ fun LoginScreen(navController: NavController){
         Spacer(modifier = Modifier.height(20.dp))
 
 
-        Column (modifier = Modifier.verticalScroll(rememberScrollState())){
-            Card (modifier = Modifier.fillMaxWidth().height(700.dp),
+        Column (){
+            Card (modifier = Modifier
+                .fillMaxWidth()
+                .height(700.dp),
                 shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)){
 
                 var email by remember { mutableStateOf("") }
@@ -128,31 +126,37 @@ fun LoginScreen(navController: NavController){
 
                 val context = LocalContext.current
                 val authViewModel = AuthViewModel(navController, context)
-                Button(
-                    onClick = {
-                        authViewModel.login(email, password)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .padding(start = 20.dp, end = 20.dp),
-                    colors = ButtonDefaults.buttonColors(newGreen),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Text(text = "LOGIN")
-                }
 
-                Spacer(modifier = Modifier.height(10.dp))
+
+
+                   Button(
+                       onClick = {
+                           authViewModel.login(email, password)
+                       },
+                       modifier = Modifier
+                           .padding(start = 20.dp, end = 20.dp),
+                       colors = ButtonDefaults.buttonColors(newGreen),
+                       shape = RoundedCornerShape(10.dp)
+                   ) {
+                       Text(text = "SignIn as Passenger/Driver")
+                   }
+
+                   Spacer(modifier = Modifier.height(10.dp))
+
+
+
+
                 Text(
                     text = "Do not have an account ?Register",
-                    fontSize = 18.sp,
+                    fontSize = 15.sp,
                     fontFamily = FontFamily.SansSerif,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
                             navController.navigate(ROUT_SIGNUP)
                         },
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = newGreen
                 )
 
 

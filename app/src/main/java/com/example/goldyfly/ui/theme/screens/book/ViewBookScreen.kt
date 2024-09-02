@@ -66,14 +66,14 @@ import com.example.goldyfly.ui.theme.newGreen
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ViewProductsScreen(navController: NavController) {
+fun ViewBookScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
 
         var context = LocalContext.current
         var bookRepository = BookViewModel(navController, context)
 
 
-        val emptyBookingState = remember { mutableStateOf(Book("","","","","","")) }
+        val emptyBookingState = remember { mutableStateOf(Book("","","","","","","")) }
         var emptyBookingListState = remember { mutableStateListOf<Book>() }
 
         var books = bookRepository.allBookings(emptyBookingState, emptyBookingListState)
@@ -164,6 +164,7 @@ fun ViewProductsScreen(navController: NavController) {
                                 currentlocation = it. currentlocation,
                                 destination  = it.destination,
                                 phone = it.phone,
+                                date = it.date,
                                 id = it.id,
                                 navController = navController,
                                 bookRepository = bookRepository,
@@ -186,7 +187,7 @@ fun ViewProductsScreen(navController: NavController) {
 
 
 @Composable
-fun BookingItem(name:String, currentlocation:String, destination:String,phone:String, id:String,
+fun BookingItem(name:String, currentlocation:String, destination:String,phone:String,date:String, id:String,
                 navController:NavController,
                 bookRepository:BookViewModel, bookImage:String) {
 
@@ -195,7 +196,7 @@ fun BookingItem(name:String, currentlocation:String, destination:String,phone:St
         .fillMaxWidth()
         .padding(15.dp)) {
         Card (modifier = Modifier
-            .height(250.dp)
+            .height(300.dp)
             .width(370.dp)
         ) {
             Box (modifier = Modifier.fillMaxSize(),
@@ -222,16 +223,17 @@ fun BookingItem(name:String, currentlocation:String, destination:String,phone:St
                         .padding(7.dp)) {
                         //details
 
-                        Text(text = "Name : $name",
-                            fontSize = 27.sp,
+                        Text(text =name,
+                            fontSize = 15.sp,
                             fontWeight = FontWeight.ExtraBold,
                             fontFamily = FontFamily.Default,
                             color = Color.White
                         )
 
 
-                        Text(text = "Current Location : $currentlocation",
-                            fontSize = 20.sp,
+
+                        Text(text = currentlocation,
+                            fontSize = 15.sp,
                             fontWeight = FontWeight.Medium,
                             fontFamily = FontFamily.Default,
                             color = Color.White
@@ -239,62 +241,27 @@ fun BookingItem(name:String, currentlocation:String, destination:String,phone:St
 
                         Spacer(modifier = Modifier.height(5.dp))
 
-                        Text(text = "Destination :$destination",
-                            fontSize = 19.sp,
+                        Text(text = destination,
+                            fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             fontFamily = FontFamily.Default,
                             color = Color.White
                         )
 
+
                         val mContext = LocalContext.current
 
-                        //button row
-                        Row (
-                            modifier = Modifier
-                                .padding(bottom = 10.dp)
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ){
-                            OutlinedButton(
-                                onClick = {
-                                    val smsIntent= Intent(Intent.ACTION_SENDTO)
-                                    smsIntent.data="smsto:$phone".toUri()
-                                    smsIntent.putExtra("sms_body","Hello passenger,...?")
-                                    mContext.startActivity(smsIntent)
-                                },
-                                shape = RoundedCornerShape(8.dp),
-
-                                ) {
-                                Row {
-                                    Icon(
-                                        imageVector = Icons.Default.Send,
-                                        contentDescription = "")
-                                    Spacer(modifier = Modifier.width(3.dp))
-                                    Text(
-                                        text = "Message Passenger"
-                                    )
-                                }
-                            }
-                            Row (
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
-                            ){
-
-                                IconButton(onClick = { bookRepository.updateBooking(id) }) {
-                                    Icon(imageVector = Icons.Default.Edit, contentDescription = "", tint = Color.White)
-                                }
-
-                                Spacer(modifier = Modifier.width(5.dp))
-
-                                IconButton(onClick = { bookRepository.deleteBooking(id) }) {
-                                    Icon(imageVector = Icons.Default.Delete, contentDescription = "", tint = Color.White)
-                                }
 
 
-                            }
+                        Text(text = date,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Default,
+                            color = Color.White
+                        )
 
-                        }
-                        //end of button row
+
+
 
 
                         //end details
@@ -313,8 +280,8 @@ fun BookingItem(name:String, currentlocation:String, destination:String,phone:St
 
 @Composable
 @Preview(showBackground = true)
-fun ViewProductsScreenPreview(){
+fun ViewBooksScreenPreview(){
 
-    ViewProductsScreen(navController = rememberNavController())
+    ViewBookScreen(navController = rememberNavController())
 
 }

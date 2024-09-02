@@ -7,18 +7,17 @@ import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavController
-import com.example.goldyfly.models.Book
-import com.example.goldyfly.navigation.BOOKING_URL
-
+import com.example.goldyfly.models.Account
+import com.example.goldyfly.navigation.ADD_ACCOUNT
 import com.example.goldyfly.navigation.ROUT_LOGIN
+import com.example.goldyfly.navigation.VIEW_ACCOUNT
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
-
-class BookViewModel(var navController: NavController, var context: Context) {
+class AccountViewModel(var navController: NavController, var context: Context) {
     var authViewModel:AuthViewModel
     var progress: ProgressDialog
     init {
@@ -31,10 +30,10 @@ class BookViewModel(var navController: NavController, var context: Context) {
         progress.setMessage("Please wait...")
     }
 
-    fun uploadBooking(name:String, currentlocation:String,destination:String, date:String,phone: String,filePath: Uri){
-        val bookId = System.currentTimeMillis().toString()
+    fun addAccount(name:String, email:String, plate:String, filePath: Uri){
+        val accountId = System.currentTimeMillis().toString()
         val storageRef = FirebaseStorage.getInstance().getReference()
-            .child("Books/$bookId")
+            .child("Accounts/$accountId")
         progress.show()
         storageRef.putFile(filePath).addOnCompleteListener{
             progress.dismiss()
@@ -42,12 +41,13 @@ class BookViewModel(var navController: NavController, var context: Context) {
                 // Save data to db
                 storageRef.downloadUrl.addOnSuccessListener {
                     var imageUrl = it.toString()
-                    var product = Book(name,currentlocation,destination,date,phone,imageUrl,bookId)
+                    var account = Account(name,plate,email,imageUrl,accountId)
                     var databaseRef = FirebaseDatabase.getInstance().getReference()
-                        .child("Books/$bookId")
-                    databaseRef.setValue(product).addOnCompleteListener {
+                        .child("Accounts/$accountId")
+                    databaseRef.setValue(account).addOnCompleteListener {
                         if (it.isSuccessful){
-                            Toast.makeText(this.context, "Success", Toast.LENGTH_SHORT).show()
+                            navController.navigate(VIEW_ACCOUNT)
+                            Toast.makeText(this.context, "Successfully created an account", Toast.LENGTH_SHORT).show()
                         }else{
                             Toast.makeText(this.context, "Error", Toast.LENGTH_SHORT).show()
                         }
@@ -59,42 +59,37 @@ class BookViewModel(var navController: NavController, var context: Context) {
         }
     }
 
-    fun allBookings(
-        book: MutableState<Book>,
-        books: SnapshotStateList<Book>
-    ):SnapshotStateList<Book>{
-        progress.show()
+    fun ViewAccount(account: MutableState<Account>, accounts: SnapshotStateList<Account>):SnapshotStateList<Account>{
         var ref = FirebaseDatabase.getInstance().getReference()
-            .child("Books")
+            .child("Accounts")
         ref.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                books.clear()
+                accounts.clear()
                 for (snap in snapshot.children){
-                    var retrievedBooking = snap.getValue(Book::class.java)
-                    book.value = retrievedBooking!!
-                    books.add(retrievedBooking)
+                    var retrievedAccount = snap.getValue(Account::class.java)
+                    account.value = retrievedAccount!!
+                    accounts.add(retrievedAccount)
                 }
-                progress.dismiss()
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, "DB locked", Toast.LENGTH_SHORT).show()
             }
         })
-        return books
+        return accounts
     }
 
-    fun updateBooking(bookId:String){
+    fun updateAccount(accountId:String){
         var ref = FirebaseDatabase.getInstance().getReference()
-            .child("Books/$bookId")
+            .child("Account/$accountId")
         ref.removeValue()
-        navController.navigate(BOOKING_URL)
+        navController.navigate(ADD_ACCOUNT)
     }
 
 
-    fun deleteBooking(bookId:String){
+    fun deleteAccount(accountId:String){
         var ref = FirebaseDatabase.getInstance().getReference()
-            .child("Books/$bookId")
+            .child("Accounts/$accountId")
         ref.removeValue()
         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
     }

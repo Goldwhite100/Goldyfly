@@ -1,6 +1,7 @@
 package com.example.goldyfly.ui.theme.screens.book
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
@@ -9,12 +10,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +27,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Add
@@ -33,6 +38,8 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -51,23 +58,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.goldyfly.R
 import com.example.goldyfly.data.BookViewModel
 import com.example.goldyfly.navigation.BOOKING_URL
 import com.example.goldyfly.ui.theme.Purple40
 import com.example.goldyfly.ui.theme.newGreen
+import java.util.Calendar
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -145,7 +159,20 @@ fun BookScreen(navController: NavController){
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
+                    Spacer(modifier = Modifier.height(30.dp))
 
+
+                    Box (modifier = Modifier
+                        .height(150.dp)
+                        .fillMaxWidth(),
+                        contentAlignment = Alignment.Center){
+                        Image(
+                            painter = painterResource(id = R.drawable.home),
+                            contentDescription = "home",
+                            modifier = Modifier.fillMaxSize())
+
+
+                    }
 
                     Spacer(modifier = Modifier.height(50.dp))
 
@@ -153,6 +180,7 @@ fun BookScreen(navController: NavController){
                         text = "Make a Booking!",
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
+                        color = newGreen,
                         fontFamily = FontFamily.SansSerif)
 
                     var Name by remember { mutableStateOf("") }
@@ -166,7 +194,7 @@ fun BookScreen(navController: NavController){
                     OutlinedTextField(
                         value = Name,
                         onValueChange = { Name = it },
-                        label = { Text(text = "Name ") },
+                        label = { Text(text = "Name e.g Gold") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text), modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 20.dp, end = 20.dp),
@@ -174,6 +202,61 @@ fun BookScreen(navController: NavController){
                         )
 
                     Spacer(modifier = Modifier.height(10.dp))
+
+                    //DateField
+                    var selectedDate by remember { mutableStateOf("") }
+                    var showDatePicker by remember { mutableStateOf(false) }
+
+
+
+                    Row(modifier = Modifier.padding(start = 20.dp, end = 20.dp)){
+
+                        Button(onClick = {
+                            val calendar = Calendar.getInstance()
+                            val year = calendar.get(Calendar.YEAR)
+                            val month = calendar.get(Calendar.MONTH)
+                            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+                            DatePickerDialog(
+                                //Don't forget to create the context variable located just below
+                                //the aboutscreen function
+                                context,
+                                { _, selectedYear, selectedMonth, selectedDay ->
+                                    selectedDate = "${selectedDay}/${selectedMonth + 1}/${selectedYear}"
+                                },
+                                year,
+                                month,
+                                day
+                            ).show()
+                        },
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(newGreen),
+                            modifier = Modifier
+                                .height(65.dp)
+                                .padding(top = 10.dp)) {
+                            Text(text = "Date")
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+
+                        OutlinedTextField(
+                            value = selectedDate ?: "",
+                            onValueChange = { /* No-op, as we handle value through date picker */ },
+                            label = { Text("Select Date") },
+                            readOnly = true,  // Makes the text field non-editable
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .width(250.dp),
+                            trailingIcon = {
+                                Text(text = "📅")  // Icon to indicate date picker
+                            },
+                            singleLine = true
+                        )
+
+
+                    }
+
+                    //End of a datefield
+
 
                     OutlinedTextField(
                         value = clocation,
@@ -200,12 +283,12 @@ fun BookScreen(navController: NavController){
 
                         )
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     OutlinedTextField(
                         value = phone,
                         onValueChange = { phone = it },
-                        label = { Text(text = "Phone") },
+                        label = { Text(text = "Phone e.g 0743567821") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -213,14 +296,14 @@ fun BookScreen(navController: NavController){
 
                         )
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
 
 
                     //---------------------IMAGE PICKER START-----------------------------------//
 
                     var modifier = Modifier
-                    ImagePicker(modifier,context, navController, Name.trim(), clocation.trim(), destination.trim(),phone.trim())
+                    ImagePicker(modifier,context, navController, Name.trim(),selectedDate.trim(), clocation.trim(), destination.trim(),phone.trim())
 
                     //---------------------IMAGE PICKER END-----------------------------------//
 
@@ -242,32 +325,12 @@ fun BookScreen(navController: NavController){
 
 val bottomNavItems = listOf(
     BottomNavItem(
-        title = "Home",
-        route="home",
-        selectedIcon= Icons.Filled.Home,
-        unselectedIcon= Icons.Outlined.Home,
-        hasNews = false,
-        badges=0
-    ),
-
-
-
-    BottomNavItem(
-        title = "Book",
-        route="add",
-        selectedIcon= Icons.Filled.Add,
-        unselectedIcon= Icons.Outlined.Add,
-        hasNews = true,
-        badges=0
-    ),
-
-    BottomNavItem(
-        title = "View",
+        title = "view Booking",
         route="view",
         selectedIcon= Icons.Filled.Info,
         unselectedIcon= Icons.Outlined.Info,
-        hasNews = true,
-        badges=1
+        hasNews = false,
+        badges=0
     ),
 
 
@@ -286,7 +349,7 @@ data class BottomNavItem(
 
 
 @Composable
-fun ImagePicker(modifier: Modifier = Modifier, context: Context, navController: NavController, name:String, currentlocation:String, destination:String, phone:String) {
+fun ImagePicker(modifier: Modifier = Modifier, context: Context, navController: NavController, name:String, currentlocation:String, destination:String,date:String, phone:String) {
     var hasImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
 
@@ -320,26 +383,29 @@ fun ImagePicker(modifier: Modifier = Modifier, context: Context, navController: 
                     imagePicker.launch("image/*")
                 },
                 shape = RoundedCornerShape(5.dp),
-                colors = ButtonDefaults.buttonColors(newGreen)
+                colors = ButtonDefaults.buttonColors(Color.Gray)
             ) {
                 Text(
                     text = "Select Image"
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 var productRepository = BookViewModel(navController,context)
-                productRepository.uploadBooking(name,currentlocation,destination,phone,imageUri!!)
+                productRepository.uploadBooking(name,currentlocation,destination,phone,date,imageUri!!)
 
 
             },
                 shape = RoundedCornerShape(5.dp),
-                colors = ButtonDefaults.buttonColors(Color.Gray)) {
-                Text(text = "Upload")
+                colors = ButtonDefaults.buttonColors(newGreen)) {
+                Text(text = "Book Now")
             }
+
+            Spacer(modifier = Modifier.height(120.dp))
+
         }
     }
 }

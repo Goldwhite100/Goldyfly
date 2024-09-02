@@ -62,12 +62,12 @@ fun SignupScreen(navController: NavController){
             .background(newGreen),
         horizontalAlignment = Alignment.CenterHorizontally
         ){
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(50.dp))
         Image(
             painter = painterResource(id = R.drawable.img) ,
             contentDescription = "",
             modifier = Modifier
-                .size(200.dp),
+                .size(150.dp),
 
             contentScale = ContentScale.Crop
 
@@ -77,12 +77,6 @@ fun SignupScreen(navController: NavController){
         Text(
             text = "GoldyFly",
             fontSize = 60.sp,
-            fontFamily = FontFamily.Cursive,
-            color = Color.White
-        )
-        Text(
-            text = "Register Account",
-            fontSize = 20.sp,
             fontFamily = FontFamily.SansSerif,
             color = Color.White
         )
@@ -94,7 +88,7 @@ fun SignupScreen(navController: NavController){
         Column (modifier = Modifier.verticalScroll(rememberScrollState())){
             Card (modifier = Modifier
                 .fillMaxWidth()
-                .height(700.dp),
+                .height(500.dp),
                 shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)){
 
                 Spacer(modifier = Modifier.height(30.dp))
