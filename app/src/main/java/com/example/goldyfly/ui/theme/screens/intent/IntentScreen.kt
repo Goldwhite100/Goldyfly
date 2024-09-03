@@ -61,6 +61,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.goldyfly.ui.theme.newGreen
 import com.example.goldyfly.R
+import com.example.goldyfly.ui.theme.Pink40
+import com.example.goldyfly.ui.theme.Pink80
+import com.example.goldyfly.ui.theme.Purple80
+import com.example.goldyfly.ui.theme.PurpleGrey40
+import com.example.goldyfly.ui.theme.PurpleGrey80
 import com.example.goldyfly.ui.theme.screens.book.BottomNavItem
 import com.example.goldyfly.ui.theme.screens.book.bottomNavItems
 
@@ -167,7 +172,7 @@ fun IntentScreen(navController: NavController){
                                     modifier = Modifier
                                         .align(Alignment.TopStart)
                                         .padding(10.dp),
-                                    tint = Color.Blue
+                                    tint = Purple80
 
                                 )
 
@@ -275,7 +280,7 @@ fun IntentScreen(navController: NavController){
                             .fillMaxWidth()
                             .height(50.dp)
                             .padding(start = 20.dp, end = 20.dp),
-                        colors = ButtonDefaults.buttonColors(Color.Red),
+                        colors = ButtonDefaults.buttonColors(PurpleGrey80),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(text = "CALL")
@@ -312,7 +317,7 @@ fun IntentScreen(navController: NavController){
                             shareIntent.type = "text/plain"
                             shareIntent.putExtra(
                                 Intent.EXTRA_EMAIL,
-                                arrayOf("akinyiglory2@gmail.com")
+                                arrayOf("aokoh365h@gmail.com")
                             )
                             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "subject")
                             shareIntent.putExtra(Intent.EXTRA_TEXT, "Hello, this is the email body")
@@ -322,7 +327,7 @@ fun IntentScreen(navController: NavController){
                             .fillMaxWidth()
                             .height(50.dp)
                             .padding(start = 20.dp, end = 20.dp),
-                        colors = ButtonDefaults.buttonColors(newGreen),
+                        colors = ButtonDefaults.buttonColors(Pink80),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(text = "EMAIL")
@@ -345,7 +350,7 @@ fun IntentScreen(navController: NavController){
                             .fillMaxWidth()
                             .height(50.dp)
                             .padding(start = 20.dp, end = 20.dp),
-                        colors = ButtonDefaults.buttonColors(newGreen),
+                        colors = ButtonDefaults.buttonColors(PurpleGrey40),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(text = "SHARE")
@@ -365,7 +370,7 @@ fun IntentScreen(navController: NavController){
                             .fillMaxWidth()
                             .height(50.dp)
                             .padding(start = 20.dp, end = 20.dp),
-                        colors = ButtonDefaults.buttonColors(newGreen),
+                        colors = ButtonDefaults.buttonColors(Pink40),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(text = "CAMERA")
